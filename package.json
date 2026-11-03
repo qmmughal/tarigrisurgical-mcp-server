@@ -6,14 +6,14 @@
   "type": "module",
   "license": "MIT",
   "author": "Qaiser Mehmood",
-  "mcpName": "io.github.qmmughal/tarigri-surgical-mcp-server",
+  "mcpName": "io.github.qmmughal/tarigrisurgical-mcp-server",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/qmmughal/tarigri-surgical-mcp-server.git"
+    "url": "git+https://github.com/qmmughal/tarigrisurgical-mcp-server.git"
   },
-  "homepage": "https://github.com/qmmughal/tarigri-surgical-mcp-server#readme",
+  "homepage": "https://github.com/qmmughal/tarigrisurgical-mcp-server#readme",
   "bugs": {
-    "url": "https://github.com/qmmughal/tarigri-surgical-mcp-server/issues"
+    "url": "https://github.com/qmmughal/tarigrisurgical-mcp-server/issues"
   },
   "keywords": [
     "surgical-instruments",

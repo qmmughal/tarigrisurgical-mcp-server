@@ -1,9 +1,9 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
-  "name": "io.github.qmmughal/tarigri-surgical-mcp-server",
+  "name": "io.github.qmmughal/tarigrisurgical-mcp-server",
   "description": "Browse the Tarigri Surgical Instruments wholesale catalog, estimate quotes and draft order inquiries.",
   "repository": {
-    "url": "https://github.com/qmmughal/tarigri-surgical-mcp-server",
+    "url": "https://github.com/qmmughal/tarigrisurgical-mcp-server",
     "source": "github"
   },
   "version": "1.0.0",
