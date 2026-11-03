@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tarigri Surgical MCP Server</title>
+<meta name="description" content="Remote Model Context Protocol server for the Tarigri Surgical Instruments wholesale catalog.">
+<style>
+  :root { --bg:#fff; --fg:#17202a; --muted:#5b6670; --card:#f3f6f7; --accent:#0b6b6b; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#10181b; --fg:#e8eef0; --muted:#9aa8ae; --card:#1a2529; --accent:#4fc3c3; } }
+  body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.55 system-ui,sans-serif; }
+  main { max-width:760px; margin:0 auto; padding:2rem 16px 4rem; }
+  h1 { color:var(--accent); margin-bottom:.2rem; }
+  p.sub { color:var(--muted); margin-top:0; }
+  pre { background:var(--card); padding:1rem; border-radius:8px; overflow-x:auto; font-size:.85rem; }
+  code { font-family:ui-monospace,Menlo,Consolas,monospace; }
+  h2 { margin-top:2rem; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Tarigri Surgical MCP Server</h1>
+  <p class="sub">Read-only access to the <a href="https://www.tarigrisurgical.com">Tarigri Surgical Instruments</a> wholesale catalog for AI assistants. Transport: Streamable HTTP, no authentication.</p>
+
+  <p>Endpoint: <code id="ep">/mcp</code></p>
+
+  <h2>Tools</h2>
+  <p><code>search_products</code>, <code>get_product</code>, <code>list_categories</code>, <code>estimate_quote</code>, <code>get_company_info</code>, <code>draft_inquiry</code>. Resources: <code>tarigri://catalog</code>, <code>tarigri://product/{sku}</code>.</p>
+
+  <h2>Claude Code</h2>
+  <pre><code id="cc">claude mcp add --transport http tarigri-surgical /mcp</code></pre>
+
+  <h2>Cursor / VS Code / Windsurf / Claude Desktop (mcp-remote)</h2>
+  <pre><code id="cfg"></code></pre>
+
+  <h2>Local (stdio)</h2>
+  <pre><code>{ "mcpServers": { "tarigri-surgical": { "command": "npx", "args": ["-y", "tarigri-surgical-mcp-server"] } } }</code></pre>
+</main>
+<script>
+  var url = location.origin + "/mcp";
+  document.getElementById("ep").textContent = url;
+  document.getElementById("cc").textContent = "claude mcp add --transport http tarigri-surgical " + url;
+  document.getElementById("cfg").textContent = JSON.stringify({ mcpServers: { "tarigri-surgical": { url: url } } }, null, 2) +
+    "\n\n// Clients without native remote support:\n" +
+    JSON.stringify({ mcpServers: { "tarigri-surgical": { command: "npx", args: ["-y", "mcp-remote", url] } } }, null, 2);
+</script>
+</body>
+</html>

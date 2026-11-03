@@ -1,14 +1,17 @@
 # Tarigri Surgical MCP Server
 
-> A TypeScript Model Context Protocol server (stdio) exposing the tarigrisurgical.com wholesale surgical-instrument catalog to AI agents.
+> A TypeScript Model Context Protocol server exposing the tarigrisurgical.com wholesale surgical-instrument catalog to AI agents, over stdio and Streamable HTTP (Vercel).
 
 ## Behaviour
-Read-only. Fetches `/data.js` from the Tarigri site, validates it with Zod, converts PKR prices to USD, caches it, and serves it through tools, resources and one prompt. It never places orders or sends messages.
+Read-only. Fetches `/data.js` from the Tarigri site, validates it with Zod, converts PKR prices to USD, caches it, and serves it through tools (with output schemas), resources and one prompt. It never places orders or sends messages.
 
 ## Structure
+- `src/server.ts`: `createServer(service)` factory shared by both transports.
+- `src/index.ts`: stdio entry point (bin).
+- `api/mcp.ts`: stateless Streamable HTTP entry point for Vercel (`POST /mcp`).
 - `src/services/catalogSource.ts`: evaluates and validates the site's `data.js`.
 - `src/services/catalogService.ts`: catalog model, search, quote estimation, caching with stale fallback.
 - `src/tools/catalogTools.ts`: `search_products`, `get_product`, `list_categories`, `estimate_quote`, `get_company_info`, `draft_inquiry`.
-- `src/resources/catalogResource.ts`: `tarigri://catalog`, `tarigri://product/{sku}`.
+- `src/resources/catalogResources.ts`: `tarigri://catalog`, `tarigri://product/{sku}` (with completion).
 - `src/prompts/buyerPrompts.ts`: `source_instruments`.
-- `stdout` is reserved for JSON-RPC; logs go to `stderr` via pino.
+- `stdout` is reserved for JSON-RPC on stdio; logs go to `stderr` via pino.

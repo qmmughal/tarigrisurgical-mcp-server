@@ -1,26 +1,19 @@
-import { Prompt } from "@modelcontextprotocol/sdk/types.js";
-import { withErrorHandling } from "../utils/errors.js";
+import { z } from "zod";
+import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 
-export function getBuyerPromptDefinitions(): Prompt[] {
-  return [
+export function registerBuyerPrompts(server: McpServer) {
+  server.registerPrompt(
+    "source_instruments",
     {
-      name: "source_instruments",
+      title: "Source instruments",
       description: "Help a buyer pick Tarigri instruments for a use case and budget, then estimate and draft the order request.",
-      arguments: [
-        { name: "need", description: "What the buyer needs, e.g. 'minor surgery kits for a vet clinic'", required: true },
-        { name: "budget_usd", description: "Approximate total budget in USD", required: false },
-        { name: "destination_country", description: "Where the goods ship to", required: false },
-      ],
+      argsSchema: {
+        need: z.string().describe("What the buyer needs, e.g. 'minor surgery kits for a vet clinic'"),
+        budget_usd: z.string().optional().describe("Approximate total budget in USD"),
+        destination_country: z.string().optional().describe("Where the goods ship to"),
+      },
     },
-  ];
-}
-
-export async function handleGetBuyerPrompt(name: string, args: Record<string, string> | undefined) {
-  return withErrorHandling(`get_prompt:${name}`, async () => {
-    const need = args?.need || "general surgical instruments";
-    const budget = args?.budget_usd ? ` Total budget is about USD ${args.budget_usd}.` : "";
-    const dest = args?.destination_country ? ` Destination: ${args.destination_country}.` : "";
-    return {
+    ({ need, budget_usd, destination_country }) => ({
       description: `Sourcing help for: ${need}`,
       messages: [
         {
@@ -28,14 +21,16 @@ export async function handleGetBuyerPrompt(name: string, args: Record<string, st
           content: {
             type: "text" as const,
             text:
-              `I'm a wholesale buyer looking for: ${need}.${budget}${dest}\n\n` +
-              "Using the Tarigri Surgical tools: search the catalog for suitable instruments, respect each item's MOQ, " +
+              `I'm a wholesale buyer looking for: ${need}.` +
+              (budget_usd ? ` Total budget is about USD ${budget_usd}.` : "") +
+              (destination_country ? ` Destination: ${destination_country}.` : "") +
+              "\n\nUsing the Tarigri Surgical tools: search the catalog for suitable instruments, respect each item's MOQ, " +
               "use estimate_quote to price quantities (noting volume tiers at 50+/100+), and summarise the options. " +
               "Prices are indicative, FOB Sialkot, shipping excluded. If I like the result, use draft_inquiry to prepare " +
               "the email/WhatsApp request. Do not claim certifications (CE/ISO) beyond 'available on request'.",
           },
         },
       ],
-    };
-  });
+    }),
+  );
 }
