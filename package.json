@@ -1,0 +1,51 @@
+{
+  "name": "tarigri-surgical-mcp-server",
+  "version": "1.0.0",
+  "description": "MCP server exposing the Tarigri Surgical Instruments (tarigrisurgical.com) wholesale catalog, quotes and order inquiries",
+  "main": "dist/index.js",
+  "type": "module",
+  "license": "MIT",
+  "author": "Qaiser Mehmood",
+  "mcpName": "io.github.qmmughal/tarigri-surgical-mcp-server",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/qmmughal/tarigri-surgical-mcp-server.git"
+  },
+  "homepage": "https://github.com/qmmughal/tarigri-surgical-mcp-server#readme",
+  "bugs": {
+    "url": "https://github.com/qmmughal/tarigri-surgical-mcp-server/issues"
+  },
+  "keywords": [
+    "surgical-instruments",
+    "sialkot",
+    "mcp",
+    "model-context-protocol",
+    "mcp-server",
+    "typescript",
+    "ai-agent",
+    "claude",
+    "llm"
+  ],
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "esbuild src/index.ts --bundle --platform=node --target=node18 --format=esm --outfile=dist/index.js --banner:js=\"import { createRequire as __cr } from 'node:module'; const require = __cr(import.meta.url);\"",
+    "start": "node dist/index.js",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "eslint src/**/*.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.4.1",
+    "pino": "^9.6.0",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "esbuild": "^0.24.2",
+    "pino-pretty": "^13.0.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  }
+}
